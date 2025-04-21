@@ -6,17 +6,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const balanceElement = document.getElementById('wallet-balance');
 
     // --- Solana Connection Setup ---
-    const RPC_ENDPOINT = 'https://api.mainnet-beta.solana.com';
+    // Using Helius RPC endpoint
+    const RPC_ENDPOINT = 'https://gabriella-2ovc8x-fast-mainnet.helius-rpc.com';
     let connection;
     
-    try {
-        connection = new solanaWeb3.Connection(RPC_ENDPOINT, {
-            commitment: 'confirmed',
-            confirmTransactionInitialTimeout: 60000
-        });
-    } catch (error) {
-        console.error('Failed to initialize Solana connection:', error);
-        balanceElement.textContent = 'Failed to initialize connection';
+    function initializeConnection() {
+        try {
+            connection = new solanaWeb3.Connection(RPC_ENDPOINT, {
+                commitment: 'confirmed',
+                confirmTransactionInitialTimeout: 60000
+            });
+            console.log('Connected to Helius RPC endpoint');
+        } catch (error) {
+            console.error('Failed to initialize Solana connection:', error);
+            balanceElement.textContent = 'Failed to initialize connection';
+            return false;
+        }
+        return true;
+    }
+
+    if (!initializeConnection()) {
         return;
     }
 
@@ -36,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             balanceElement.textContent = `${solBalance.toFixed(4)} SOL`;
         } catch (error) {
             console.error('Error fetching balance:', error);
+            
             if (error.message.includes('Invalid public key')) {
                 balanceElement.textContent = 'Invalid wallet address';
             } else if (error.message.includes('Network request failed')) {
