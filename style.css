@@ -1,0 +1,222 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #000;
+    color: #ccc; /* Off-white/grey */
+    font-family: 'VT323', monospace; /* Pixelated/Retro font */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    overflow: hidden; /* Hide scrollbars */
+    position: relative;
+}
+
+.container {
+    text-align: center;
+    z-index: 2; /* Above the noise overlay */
+    max-width: 90%;
+    padding: 20px;
+}
+
+.logo {
+    font-size: clamp(3em, 10vw, 6em); /* Responsive font size */
+    margin-bottom: 40px;
+    color: #eee;
+    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #f09, 0 0 20px #f09; /* Glitchy glow */
+    animation: text-flicker 4s linear infinite alternate;
+    letter-spacing: 5px;
+    position: relative; /* For pseudo-element glitch */
+    user-select: none; /* Prevent text selection */
+}
+
+/* Subtle glitch effect using pseudo-elements */
+.logo::before,
+.logo::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000; /* Match background */
+    overflow: hidden;
+    clip: rect(0, 900px, 0, 0);
+}
+
+.logo::before {
+    left: 2px;
+    text-shadow: -1px 0 red;
+    animation: glitch-anim-1 2s infinite linear alternate-reverse;
+}
+
+.logo::after {
+    left: -2px;
+    text-shadow: -1px 0 blue;
+    animation: glitch-anim-2 3s infinite linear alternate-reverse;
+}
+
+@keyframes text-flicker {
+  0%, 18%, 22%, 25%, 53%, 57%, 100% {
+    text-shadow:
+      0 0 4px #fff,
+      0 0 10px #fff,
+      0 0 18px #fff,
+      0 0 38px #f09,
+      0 0 70px #f09;
+    opacity: 1;
+  }
+  20%, 24%, 55% {
+    text-shadow: none;
+    opacity: 0.6;
+  }
+}
+
+@keyframes glitch-anim-1 {
+    0% { clip: rect(13px, 9999px, 101px, 0); }
+    5% { clip: rect(27px, 9999px, 94px, 0); }
+    /* ... (add more steps for complex glitch) ... */
+    100% { clip: rect(42px, 9999px, 148px, 0); }
+}
+
+@keyframes glitch-anim-2 {
+    0% { clip: rect(129px, 9999px, 103px, 0); }
+    /* ... (add more steps for complex glitch) ... */
+    100% { clip: rect(27px, 9999px, 139px, 0); }
+}
+
+
+.contract-container {
+    display: inline-flex; /* Fit content width */
+    align-items: center;
+    justify-content: center;
+    background-color: #1a1a1a; /* Slightly lighter black */
+    padding: 10px 15px;
+    border: 1px solid #444; /* Darker border */
+    border-radius: 2px; /* Sharper corners */
+    margin-bottom: 30px; /* More space */
+    position: relative; /* For feedback positioning */
+    max-width: 100%; /* Prevent overflow on small screens */
+}
+
+#contract-address {
+    font-size: clamp(1em, 3vw, 1.3em); /* Responsive font size */
+    color: #aaccaa; /* Greenish tint */
+    margin-right: 10px;
+    word-break: break-all; /* Prevent overflow */
+    user-select: text; /* Allow selecting address text */
+    text-shadow: 0 0 3px #aaccaa;
+}
+
+#copy-button {
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    padding: 5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+}
+
+#copy-button svg {
+    width: 16px;
+    height: 16px;
+}
+
+#copy-button:hover {
+    color: #eee; /* Brighter on hover */
+}
+
+#copy-button:active {
+    transform: translateY(1px); /* Click effect */
+}
+
+.copy-feedback {
+    position: absolute;
+    bottom: -28px; /* Position below the container */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font-size: 0.9em;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    white-space: nowrap;
+    pointer-events: none; /* Don't interfere with clicks */
+    z-index: 10;
+}
+
+.copy-feedback.show {
+    opacity: 1;
+}
+
+
+.hint {
+    font-size: clamp(0.8em, 2vw, 1em);
+    color: #666; /* Darker grey */
+    font-style: italic;
+    letter-spacing: 1px;
+    animation: hint-pulse 6s infinite ease-in-out;
+    max-width: 80%; /* Prevent being too wide */
+    margin: 0 auto; /* Center hint text */
+    user-select: none; /* Prevent text selection */
+}
+
+@keyframes hint-pulse {
+    0%, 100% { color: #555; opacity: 0.7; }
+    50% { color: #888; opacity: 1; }
+}
+
+/* Noise Overlay */
+.noise {
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    right: -50%;
+    bottom: -50%;
+    width: 200%;
+    height: 200%;
+    background: transparent url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2UpIi8+PC9zdmc+') repeat;
+    animation: noise-anim 0.2s infinite linear;
+    opacity: 0.03; /* Very subtle noise */
+    visibility: visible;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes noise-anim {
+    0% { transform: translate(0, 0); }
+    10% { transform: translate(-5%, -5%); }
+    20% { transform: translate(-10%, 5%); }
+    30% { transform: translate(5%, -10%); }
+    40% { transform: translate(-5%, 15%); }
+    50% { transform: translate(-10%, 5%); }
+    60% { transform: translate(15%, 0); }
+    70% { transform: translate(0, 10%); }
+    80% { transform: translate(-15%, 0); }
+    90% { transform: translate(10%, 5%); }
+    100% { transform: translate(5%, 0); }
+}
+
+/* Optional: Subtle body background flicker */
+@keyframes body-flicker {
+    0%   { background-color: #000; }
+    49%  { background-color: #000; }
+    50%  { background-color: #0a0a0a; } /* Brief slightly lighter flicker */
+    51%  { background-color: #000; }
+    100% { background-color: #000; }
+}
+
+/* Uncomment to enable body flicker
+body {
+    animation: body-flicker 15s infinite linear;
+}
+*/
+
