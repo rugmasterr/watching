@@ -6,30 +6,53 @@ document.addEventListener('DOMContentLoaded', () => {
     const balanceElement = document.getElementById('wallet-balance');
 
     // --- Solana Connection Setup ---
-    const connection = new solanaWeb3.Connection('https://api.mainnet-beta.solana.com');
+    const RPC_ENDPOINT = 'https://api.mainnet-beta.solana.com';
+    const connection = new solanaWeb3.Connection(RPC_ENDPOINT, {
+        commitment: 'confirmed',
+        confirmTransactionInitialTimeout: 60000
+    });
     const LAMPORTS_PER_SOL = 1000000000;
 
     // Function to update wallet balance
     async function updateWalletBalance() {
         try {
-            if (!walletAddress || walletAddress.textContent === 'WALLETADDRESSPLACEHOLDER') {
+            if (!walletAddress || !walletAddress.textContent) {
                 balanceElement.textContent = 'Wallet address not set';
                 return;
             }
 
-            const publicKey = new solanaWeb3.PublicKey(walletAddress.textContent);
+            const publicKey = new solanaWeb3.PublicKey(walletAddress.textContent.trim());
             const balance = await connection.getBalance(publicKey);
             const solBalance = balance / LAMPORTS_PER_SOL;
             balanceElement.textContent = `${solBalance.toFixed(4)} SOL`;
         } catch (error) {
             console.error('Error fetching balance:', error);
-            balanceElement.textContent = 'Error loading balance';
+            if (error.message.includes('Invalid public key')) {
+                balanceElement.textContent = 'Invalid wallet address';
+            } else {
+                balanceElement.textContent = 'Error loading balance';
+            }
         }
     }
 
-    // Set up balance update interval
-    setInterval(updateWalletBalance, 5000); // Update every 5 seconds
-    updateWalletBalance(); // Initial update
+    // Set up balance update interval with exponential backoff on error
+    let updateInterval = 5000; // Start with 5 seconds
+    const maxInterval = 30000; // Max 30 seconds
+
+    async function updateBalanceWithBackoff() {
+        try {
+            await updateWalletBalance();
+            // If successful, reset interval to 5 seconds
+            updateInterval = 5000;
+        } catch (error) {
+            // If error, increase interval up to max
+            updateInterval = Math.min(updateInterval * 1.5, maxInterval);
+        }
+        setTimeout(updateBalanceWithBackoff, updateInterval);
+    }
+
+    // Start the update cycle
+    updateBalanceWithBackoff();
 
     // --- Generic Copy Functionality ---
     function setupCopyButton(buttonId, textElementId, feedbackElementId) {
