@@ -1,4 +1,4 @@
-<!DOCTYPE html> 2.391823754
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -22,13 +22,46 @@
             </button>
             <span id="copy-feedback" class="copy-feedback"></span>
         </div>
-        <p class="hint">Welcome. FRACTA9 seeks intelligent decentralized individuals. Those who persevere will be rewarded. Complete our series of hidden challenges and win our ever growing prize pool of: XXX SOL. The Solana prize pool increases as time goes on. There will only be one winner. Work together or work alone, though be weary of those who might betray you. YOUR FIRST HINT: kwwsv://a.frp/Iudfwd9
-          
-     </p>
+        <p class="hint">Welcome. FRACTA9 seeks intelligent decentralized individuals. Those who persevere will be rewarded. Complete our series of hidden challenges and win our ever growing prize pool of: XXX SOL. The Solana prize pool increases as time goes on. There will only be one winner. Work together or work alone, though be weary of those who might betray you. YOUR FIRST HINT: kwwsv://a.frp/Iudfwd9</p>
+
+        <!-- Wallet Address Section -->
+        <div class="wallet-container contract-container">
+            <span id="wallet-address">WALLETADDRESSPLACEHOLDER</span>
+            <button id="copy-wallet-button" title="Copy Wallet Address">
+                <!-- SVG Icon for Copy -->
+                <svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512">
+                    <path fill="currentColor" d="M384 336H192c-8.8 0-16-7.2-16-16V64c0-8.8 7.2-16 16-16l140.1 0L400 115.9V320c0 8.8-7.2 16-16 16zM192 384H384c35.3 0 64-28.7 64-64V115.9c0-12.7-5.1-24.9-14.1-33.9L366.1 14.1c-9-9-21.2-14.1-33.9-14.1H192c-35.3 0-64 28.7-64 64V320c0 35.3 28.7 64 64 64zM64 128c-35.3 0-64 28.7-64 64V448c0 35.3 28.7 64 64 64H256c35.3 0 64-28.7 64-64V416H272v32c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V192c0-8.8 7.2-16 16-16H192V128H64z"/>
+                </svg>
+            </button>
+            <span id="wallet-copy-feedback" class="copy-feedback"></span>
+        </div>
+        <p class="wallet-explanation">
+          <span style="font-weight: bold; font-size: 1.2em;">How to Win the Solana Prize Pool:</span>
+
+          Send the Correct Amount of Solana
+
+          There is one specific amount of Solana that will win the prize.
+
+          That amount is somewhere between 0 and 2.5 SOL.
+
+          Any amount over 2.5 SOL is automatically incorrect.
+
+          The first person to send the correct amount wins 100% of the prize pool.
+
+          If you send the wrong amount, you won’t win, but your Solana is added to the prize pool, increasing the total reward for the eventual winner.
+
+          The website will update when a winner has been determined and the next series of challenges will begin.
+
+          10% of the prize pool profits will be used to buy $FRACTA9 token to encourage people to hold.
+        </p>
     </div>
 
     <!-- Noise Overlay -->
     <div class="noise"></div>
+
+    <footer>
+        <a href="https://x.com/Fracta9" target="_blank" rel="noopener noreferrer">Twitter</a>
+    </footer>
 
     <script type="importmap">
         {
@@ -38,4 +71,3 @@
     <script type="module" src="script.js"></script>
 </body>
 </html>
-

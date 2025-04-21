@@ -11,7 +11,7 @@ body {
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    overflow: hidden; /* Hide scrollbars */
+    overflow: auto; /* Allows scrollbars when content overflows */
     position: relative;
 }
 
@@ -167,6 +167,7 @@ body {
     max-width: 80%; /* Prevent being too wide */
     margin: 0 auto; /* Center hint text */
     user-select: none; /* Prevent text selection */
+    padding-bottom: 20px; /* Add space below hint before wallet */
 }
 
 @keyframes hint-pulse {
@@ -174,7 +175,96 @@ body {
     50% { color: #888; opacity: 1; }
 }
 
-/* Noise Overlay */
+.wallet-container {
+    margin-top: 20px; /* Add some space above the wallet section */
+    margin-bottom: 10px; /* Reduce space below before explanation */
+}
+
+#wallet-address {
+    font-size: clamp(1em, 3vw, 1.3em);
+    color: #bbaaff; /* Slightly different color - light purple? */
+    margin-right: 10px;
+    word-break: break-all;
+    user-select: text;
+    text-shadow: 0 0 3px #bbaaff;
+}
+
+#copy-wallet-button {
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    padding: 5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+}
+
+#copy-wallet-button svg {
+    width: 16px;
+    height: 16px;
+}
+
+#copy-wallet-button:hover {
+    color: #eee;
+}
+
+#copy-wallet-button:active {
+    transform: translateY(1px);
+}
+
+#wallet-copy-feedback {
+    position: absolute;
+    bottom: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font-size: 0.9em;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 10;
+}
+
+#wallet-copy-feedback.show {
+    opacity: 1;
+}
+
+.wallet-explanation {
+    font-size: clamp(0.9em, 2.2vw, 1.1em);
+    color: #555; /* Darker than hint */
+    letter-spacing: 0.5px;
+    margin: 10px auto 30px auto; /* Adjust spacing */
+    max-width: 70%;
+    user-select: none;
+    white-space: pre-line;
+}
+
+footer {
+    position: fixed;
+    bottom: 15px;
+    width: 100%;
+    text-align: center;
+    z-index: 5; /* Above noise, below content if needed */
+}
+
+footer a {
+    color: #555;
+    font-size: clamp(1em, 1.5vw, 1.1em);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+footer a:hover {
+    color: #999;
+    text-shadow: 0 0 3px #777;
+}
+
 .noise {
     position: fixed;
     top: -50%;
@@ -219,4 +309,3 @@ body {
     animation: body-flicker 15s infinite linear;
 }
 */
-

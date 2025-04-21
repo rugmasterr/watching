@@ -1,52 +1,62 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const copyButton = document.getElementById('copy-button');
-    const contractAddress = document.getElementById('contract-address');
-    const copyFeedback = document.getElementById('copy-feedback');
+    // --- References ---
+    const logo = document.querySelector('.logo');
+    const hint = document.querySelector('.hint');
 
-    // --- Copy to Clipboard Functionality ---
-    if (copyButton && contractAddress && copyFeedback) {
-        copyButton.addEventListener('click', () => {
-            const addressText = contractAddress.innerText;
-            navigator.clipboard.writeText(addressText).then(() => {
-                // Success feedback
-                showFeedback('Copied!');
-            }).catch(err => {
-                // Error feedback (fallback for older browsers/permissions issues)
-                try {
-                    const textArea = document.createElement('textarea');
-                    textArea.value = addressText;
-                    textArea.style.position = 'fixed'; // Prevent scrolling to bottom
-                    textArea.style.top = '0';
-                    textArea.style.left = '0';
-                    textArea.style.opacity = '0';
-                    document.body.appendChild(textArea);
-                    textArea.focus();
-                    textArea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(textArea);
-                    showFeedback('Copied!');
-                } catch (fallbackErr) {
-                    showFeedback('Failed to copy');
-                    console.error('Failed to copy text: ', err);
-                    console.error('Fallback copy failed: ', fallbackErr);
-                }
+    // --- Generic Copy Functionality ---
+    function setupCopyButton(buttonId, textElementId, feedbackElementId) {
+        const copyButton = document.getElementById(buttonId);
+        const textElement = document.getElementById(textElementId);
+        const feedbackElement = document.getElementById(feedbackElementId);
+
+        if (copyButton && textElement && feedbackElement) {
+            copyButton.addEventListener('click', () => {
+                const textToCopy = textElement.innerText;
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    showFeedback(feedbackElement, 'Copied!');
+                }).catch(err => {
+                    // Fallback for older browsers/permissions issues
+                    try {
+                        const textArea = document.createElement('textarea');
+                        textArea.value = textToCopy;
+                        textArea.style.position = 'fixed';
+                        textArea.style.top = '0';
+                        textArea.style.left = '0';
+                        textArea.style.opacity = '0';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textArea);
+                        showFeedback(feedbackElement, 'Copied!');
+                    } catch (fallbackErr) {
+                        showFeedback(feedbackElement, 'Failed to copy');
+                        console.error('Failed to copy text: ', err);
+                        console.error('Fallback copy failed: ', fallbackErr);
+                    }
+                });
             });
-        });
+        } else {
+            console.warn(`Could not find all elements for copy functionality: ${buttonId}, ${textElementId}, ${feedbackElementId}`);
+        }
     }
 
-    function showFeedback(message) {
-        if (!copyFeedback) return;
-        copyFeedback.textContent = message;
-        copyFeedback.classList.add('show');
+    function showFeedback(feedbackElement, message) {
+        if (!feedbackElement) return;
+        feedbackElement.textContent = message;
+        feedbackElement.classList.add('show');
         // Hide feedback after a delay
         setTimeout(() => {
-            copyFeedback.classList.remove('show');
+            feedbackElement.classList.remove('show');
         }, 1500);
     }
 
+    // Setup copy buttons
+    setupCopyButton('copy-button', 'contract-address', 'copy-feedback');
+    setupCopyButton('copy-wallet-button', 'wallet-address', 'wallet-copy-feedback');
+
+
     // --- Subtle Creepy Effects ---
-    const logo = document.querySelector('.logo');
-    const hint = document.querySelector('.hint');
 
     // Optional: Random character flicker in hint text
     function flickerHint() {
@@ -90,4 +100,3 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 });
-
