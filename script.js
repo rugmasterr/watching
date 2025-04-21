@@ -2,6 +2,34 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- References ---
     const logo = document.querySelector('.logo');
     const hint = document.querySelector('.hint');
+    const walletAddress = document.getElementById('wallet-address');
+    const balanceElement = document.getElementById('wallet-balance');
+
+    // --- Solana Connection Setup ---
+    const connection = new solanaWeb3.Connection('https://api.mainnet-beta.solana.com');
+    const LAMPORTS_PER_SOL = 1000000000;
+
+    // Function to update wallet balance
+    async function updateWalletBalance() {
+        try {
+            if (!walletAddress || walletAddress.textContent === 'WALLETADDRESSPLACEHOLDER') {
+                balanceElement.textContent = 'Wallet address not set';
+                return;
+            }
+
+            const publicKey = new solanaWeb3.PublicKey(walletAddress.textContent);
+            const balance = await connection.getBalance(publicKey);
+            const solBalance = balance / LAMPORTS_PER_SOL;
+            balanceElement.textContent = `${solBalance.toFixed(4)} SOL`;
+        } catch (error) {
+            console.error('Error fetching balance:', error);
+            balanceElement.textContent = 'Error loading balance';
+        }
+    }
+
+    // Set up balance update interval
+    setInterval(updateWalletBalance, 5000); // Update every 5 seconds
+    updateWalletBalance(); // Initial update
 
     // --- Generic Copy Functionality ---
     function setupCopyButton(buttonId, textElementId, feedbackElementId) {

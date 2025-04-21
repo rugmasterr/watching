@@ -309,3 +309,18 @@ body {
     animation: body-flicker 15s infinite linear;
 }
 */
+
+.balance-container {
+    margin-top: 10px;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    text-align: center;
+}
+
+#wallet-balance {
+    font-family: 'VT323', monospace;
+    font-size: 1.2em;
+    color: #00ff00;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+}
